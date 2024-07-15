@@ -1,0 +1,5 @@
+pyodbc
+click
+sqlalchemy
+pandas
+tabulate

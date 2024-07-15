@@ -1,0 +1,27 @@
+version: '3'
+
+services:
+  mssql:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    user: root
+    container_name: mssql
+    environment:
+      - ACCEPT_EULA=Y # エンドユーザーライセンス契約に同意
+      - SA_PASSWORD=Passw0rd # パスワードを設定
+      - MSSQL_PID=Express # エディションを設定
+      - MSSQL_TCP_PORT=1433 # 使用するポートを設定
+      - MSSQL_LCID=1041 # 日本語に設定
+      - TZ="Asia/Tokyo" # タイムゾーン設定
+      - Japanese_CI_AS=Japanese_CI_AS # 照合順序を指定
+    ports:
+      - 1433:1433
+    volumes:
+      - ./init.db.d:/docker-initdb.d # 初期化用SQLとSQL Server起動スクリプト
+      - mssql_data:/var/opt/mssql/data # dataの永続化
+      - mssql_log:/var/opt/mssql/log # logの永続化
+      - mssql_secrets:/var/opt/mssql/secrets # secretsの永続化
+    command: ["/bin/bash", "-c", "chmod +x /docker-initdb.d/entrypoint.sh && /docker-initdb.d/entrypoint.sh"] # SQL Server起動スクリプトを実行
+volumes:
+  mssql_data:
+  mssql_log:
+  mssql_secrets:

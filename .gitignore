@@ -1,0 +1,7 @@
+# 不要なアプリ
+app.py
+
+# 各種入出力ファイル
+input/*
+output/*
+log/*
